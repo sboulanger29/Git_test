@@ -1,0 +1,41 @@
+#-----------------------------------------------------------
+# PostgreSQL Environment Variables - Global script
+#-----------------------------------------------------------
+# YYYY-MM-DD WHO        MODIFICATIONS
+# 2016-12-28 SteeveB    Initial version
+#-----------------------------------------------------------
+
+
+#-- Custom
+PGVER=9.6;                                      export PGVER
+PGCLUSTER=OLTP;                                 export PGCLUSTER    # OLTP, DWH, etc. PGDATA will be based on this
+
+PGBASE=/db_data/PostgreSQL;                     export PGBASE
+PGDATA=${PGBASE}/${PGCLUSTER}/${PGVER}/pgdata;  export PGDATA       # ie. where DB cluster will be created
+PGHOME=/usr/pgsql-${PGVER};                     export PGHOME       # PG software installation dir
+PGTBLSPC=${PGBASE}/${PGCLUSTER}/pgtblspc;       export PGTBLSPC     # tablespaces datafiles
+PGARCHIVE=${PGBASE}/${PGCLUSTER}/pgarchive;     export PGARCHIVE
+PGBACKUP=/db_backup/${PGCLUSTER}/pgbackup;      export PGBACKUP
+PGTAB=${HOME}/pgtab;                            export PGTAB        # used by upgrade_pg_database.sh script
+
+#-- PostgreSQL
+PGPASSFILE=${HOME}/.pgpass;                     export PGPASSFILE   # users's pwds (perms should be 600)
+PGLOCALEDIR=${PGHOME}/share/locale;             export PGLOCALEDIR
+MANPATH=$MANPATH:${PGHOME}/share/man;           export MANPATH
+
+#-- Shell
+PGLOCALBIN=${PGHOME}/bin
+PGGLOBALBIN=/dba_misc/scripts/PostgreSQL/global/bin
+SHELLLOCALBIN=${HOME}/bin
+SHELLGLOBALBIN=/dba_misc/scripts/bin
+
+##PATH=${PGHOME}/bin:${HOME}/bin:/dba_misc/scripts/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:${PATH}; export PATH
+PATH=${SHELLLOCALBIN}:${SHELLGLOBALBIN}:${PGLOCALBIN}:${PGGLOBALBIN}:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:${PATH}; export PATH
+LD_LIBRARY_PATH=${PGHOME}/lib:${LD_LIBRARY_PATH}; export LD_LIBRARY_PATH
+
+echo "******* POSTGRESQL Environment Loaded *********"
+echo "PGCLUSTER = ${PGCLUSTER}"
+echo "PGDATA    = ${PGDATA}"
+echo "PGBASE    = ${PGBASE}"
+echo "PGHOME    = ${PGHOME}"
+echo ""
